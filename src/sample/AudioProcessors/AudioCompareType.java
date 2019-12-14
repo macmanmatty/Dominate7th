@@ -1,0 +1,8 @@
+package sample.AudioProcessors;
+
+public enum AudioCompareType {
+
+
+    ARTIST, TRACK, ALBUM, TITLE, YEAR, ENCODER, BIT_RATE, LENGTH, COMPOSER, CONDUCTOR, PRODUCER, ENGINEER, DISC, LYRICIST,  GENERE
+
+}

@@ -1,0 +1,62 @@
+.large{
+-fx-font-size: 20px;
+-fx-alignment: center;
+-fx-font-weight: bold;
+
+
+
+
+}
+.veryLarge{
+-fx-font-size: 30px;
+-fx-alignment: center;
+-fx-font-weight: bold;
+
+
+
+
+}
+
+.infoTitle{
+-fx-font-size: 18px;
+-fx-font-weight: bold;
+
+}
+
+
+.searchHeader{
+
+-fx-font-size: 16px;
+-fx-font-weight: 200;
+
+
+
+}
+
+.searchHeader1{
+
+-fx-padding:0 0 0 54;
+
+
+}
+
+
+.searchHeader2{
+
+-fx-padding:0 0 0 50;
+
+
+
+
+}
+
+
+.searchHeader3{
+
+-fx-padding:0 0 0 70;
+
+
+
+}
+
+
