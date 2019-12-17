@@ -1,10 +1,4 @@
 package sample.AudioProcessors;
-import org.jaudiotagger.audio.AudioFile;
-import org.jaudiotagger.audio.AudioFileIO;
-import org.jaudiotagger.audio.exceptions.CannotReadException;
-import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
-import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
-import org.jaudiotagger.tag.TagException;
 import sample.AudioProcessors.CueSheets.CueSheetExeception;
 import sample.Library.CueSheets.CueSheet;
 import sample.Utilities.AudioFileUtilities;
@@ -16,7 +10,6 @@ import sample.Windows.UpdateLabel;
 import tray.notification.NotificationType;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -122,7 +115,7 @@ public class GetAudioInformationFromFiles implements AudioProcess {
                 if (file.isFile()) {
                     boolean isAudioFile = utilities.isAudioFile(file); // check if file is audio file
                     if (isAudioFile == true) {
-                        AudioInformation information=extractAudioInformation.extractInformationUsingJAudioTagger(file);
+                        AudioInformation information=extractAudioInformation.extractAudioInformationFromFile(file);
                         if(onCD==true) {
                             information.setWriteFieldsToFile(false);
                         }

@@ -14,6 +14,7 @@ import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.TagException;
+import sample.AudioProcessors.ExtractAudioInformation;
 import sample.MainAudioWindow;
 import sample.Utilities.FieldKeyOperations;
 import sample.AudioProcessors.GetAudioFiles;
@@ -66,12 +67,11 @@ public class TopMenuBar {
                 Stage stage = new Stage();
                 FileChooser directoryChooser = new FileChooser();
                 File file = directoryChooser.showOpenDialog(stage);
-                GetAudioFiles getAudioFiles = new GetAudioFiles(window.getSystemInfo(),window.getLibrary(), window.getCurrentPlaylistPane().getPlaylist());
-                boolean addToLibrary6=false;
-                Settings settings=window.getSettings();
-               getAudioFiles.setAddSongsToCurrentPlayList(true);
-               getAudioFiles.setSortByBitRate(false);
-                    getAudioFiles.loadFiles(file.getPath(), false);
+               AudioInformation information=new ExtractAudioInformation().extractAudioInformationFromFile(file);
+               window.getCurrentPlaylistPane().getPlaylist().addSong(information);
+               window.setCurrentSong(information);
+               window.setAudioFile(information.getPhysicalFile());
+               window.startPlay();
             }
         });
         menuItems.put("Open File", openFile);

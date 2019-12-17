@@ -70,29 +70,9 @@ public class AudioFileSorterWindow {
         sortFiles.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(inputDirectory==null){
-                    error.setText("Input directory is Null");
-                    return;
-                }
-                if(outputDirectory==null){
-                    error.setText("output directory is Null");
-                    return;
-                }
+                sort();
+            }
 
-
-
-                audioFileSorter = new AudioFileSorter( window.getSystemInfo().getFileSeperator(),outputPath, sortByFileType.isSelected(), sortTypeByBitRate.isSelected(), copyDuplicateFiles.isSelected(), getAudioInformationFromMusicBrainz.isSelected(), copyFilesOnMoving.isSelected(), false);
-                            audioProcess= new FileProcessor(audioFileSorter, updateLabel, progressBar);
-                            Settings settings=window.getSettings();
-                            audioProcess.setShowCompletedNotification(settings.isShowNotifcationOnProcessComplete());
-                ProgressWindow window= new ProgressWindow(audioProcess);
-                progressWindow.getChildren().clear();
-                progressWindow.getChildren().add(window.getWindow());
-                stage.hide();// refresh stage so added ui  nodes  show
-                stage.show();
-                audioProcess.manipulateFiles(inputPath);
-                            sorted = true;
-                        }
                         
         });
         choooseOutputFiles.setOnAction(
@@ -140,6 +120,37 @@ public class AudioFileSorterWindow {
 
         stage.setScene(new Scene(mainBox));
         stage.show();
+
+    }
+
+
+    private void sort(){
+        error.setText("");
+        if(inputDirectory==null){
+            error.setText("Input directory is Null");
+            return;
+        }
+        if(outputDirectory==null){
+            error.setText("output directory is Null");
+            return;
+        }
+
+
+
+        audioFileSorter = new AudioFileSorter( window.getSystemInfo().getFileSeperator(),outputPath, sortByFileType.isSelected(), sortTypeByBitRate.isSelected(), copyDuplicateFiles.isSelected(), getAudioInformationFromMusicBrainz.isSelected(), copyFilesOnMoving.isSelected(), false);
+        audioProcess= new FileProcessor(audioFileSorter, updateLabel, progressBar);
+        Settings settings=window.getSettings();
+        audioProcess.setShowCompletedNotification(settings.isShowNotifcationOnProcessComplete());
+        ProgressWindow window= new ProgressWindow(audioProcess);
+        progressWindow.getChildren().clear();
+        progressWindow.getChildren().add(window.getWindow());
+        stage.hide();// refresh stage so added ui  nodes  show
+        stage.show();
+        audioProcess.manipulateFiles(inputPath);
+        sorted = true;
+
+
+
 
     }
 }

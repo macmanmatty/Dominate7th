@@ -58,6 +58,7 @@ import java.util.List;public class FFMpegEnocderWindow {
     private List<String> fileExtensions= new ArrayList<>();
     private Label bitRateLabel;
     private String fileSeperator;
+    private Label error= new Label();
     public FFMpegEnocderWindow(  MainAudioWindow window) {
         stage.setTitle("FFmpeg Encoder");
         this.fileSeperator=window.getSystemInfo().getFileSeperator();
@@ -105,7 +106,7 @@ import java.util.List;public class FFMpegEnocderWindow {
         manuallyEnterBitRate.selectedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed (ObservableValue< ? extends Boolean > observable, Boolean oldValue, Boolean newValue){
-                if(manuallyEnterBitRate.isSelected()==false){
+                if(manuallyEnterBitRate.isSelected()==true){
                     bitrateBox.getChildren().add(bitRateNumberBox);
                     bitrateBox.getChildren().remove(bitRates);
                     bitrateBox.getChildren().remove(bitRateLabel);
@@ -119,10 +120,13 @@ import java.util.List;public class FFMpegEnocderWindow {
         optionsBox= new VBox();
         bitRateField= new NumberField();
 
-        Label bitrateLabel= new Label("Enter Conversion BitRate ");
+            Label bitRateLabel= new Label("Enter Conversion Bit Rate ");
+           this.bitRateLabel= new Label("Enter Conversion Bit Rate ");
+
+
             Label audioFormatLabel= new Label("Select Audio Format ");
 
-            bitRateNumberBox= new HBox(bitrateLabel, bitRateField);
+            bitRateNumberBox= new HBox(bitRateLabel, bitRateField);
         outputPath= new Label("Output Path:");
         selectFiles=new Button("Add Files");
         addSettings= new Button("Add FFMpeg Enocde Option");
@@ -158,30 +162,7 @@ import java.util.List;public class FFMpegEnocderWindow {
         encodeButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                HashMap <String, String> options=getOptionKeys();
-                AudioCodec codec=audioFormatsChoice.getSelectionModel().getSelectedItem();
-                int bitrate=320000;
-                if (manuallyEnterBitRate.isSelected()==false){
-                        bitrate = bitRates.getSelectionModel().getSelectedItem();
-
-
-                }
-                else{
-                    bitrate=bitRateField.getIntValue();
-                }
-                FFMpegEncoder encoder= new FFMpegEncoder(fileSeperator,window.getLibrary(), outputLocation.getPath(),codec.getExtension(), codec.getCodecNumber(),bitrate,modes.getSelectionModel().getSelectedItem().getChannels(), quality.getSelectionModel().getSelectedItem(), options);
-                encoder.setSplitAndEnocdeCueFiles(splitCuedTracks.isSelected());
-               audioFileUtilities= new AudioFileUtilities();
-              audioFileProcessor= new FileProcessor(encoder, updateLabel, fileProgressBar );
-                Settings settings=window.getSettings();
-                audioFileProcessor.setShowNotifications(settings.isShowProcessNotifications());
-               audioFileProcessor.setShowCompletedNotification(settings.isShowNotifcationOnProcessComplete());
-              ProgressWindow window= new ProgressWindow(audioFileProcessor);
-              progressWindow.getChildren().clear();
-              progressWindow.getChildren().add(window.getWindow());
-                stage.hide();// refresh stage so added ui  nodes  show
-                stage.show();
-                audioFileProcessor.manipulateFiles( fileListView.getItems());
+              encode();
             }
         });
 
@@ -227,6 +208,7 @@ import java.util.List;public class FFMpegEnocderWindow {
         mainBox.getChildren().add(encodeButton);
         mainBox.getChildren().add(optionsBox);
         mainBox.getChildren().add(addSettings);
+        mainBox.getChildren().add(error);
         mainBox.getChildren().add(progressWindow);
         mainBox.setSpacing(10);
         Label files= new Label("Files To Encode");
@@ -271,5 +253,55 @@ import java.util.List;public class FFMpegEnocderWindow {
         stage.setMinWidth(stage.getWidth()+optionHbox.getWidth()*2);
         stage.hide();
         stage.show();
+    }
+
+
+    private void encode(){
+
+
+        error.setText("");
+        HashMap <String, String> options=getOptionKeys();
+        AudioCodec codec=audioFormatsChoice.getSelectionModel().getSelectedItem();
+        int bitrate=320000;
+        if (manuallyEnterBitRate.isSelected()==false){
+            bitrate = bitRates.getSelectionModel().getSelectedItem();
+
+
+        }
+        else{
+            try {
+                bitrate = bitRateField.getIntValue();
+            }
+            catch (NumberFormatException e){
+               error.setText("Bit Rate Must be a Number!");
+
+                return;
+            }
+        }
+        if(bitrate==0){
+            error.setText("Bit Rate Cannot be Zero!");
+            return;
+
+        }
+
+        if(outputLocation==null) {
+            error.setText("Please Select an Output Location!");
+            return;
+        }
+
+
+        FFMpegEncoder encoder= new FFMpegEncoder(fileSeperator,window.getLibrary(), outputLocation.getPath(),codec.getExtension(), codec.getCodecNumber(),bitrate,modes.getSelectionModel().getSelectedItem().getChannels(), quality.getSelectionModel().getSelectedItem(), options);
+        encoder.setSplitAndEnocdeCueFiles(splitCuedTracks.isSelected());
+        audioFileUtilities= new AudioFileUtilities();
+        audioFileProcessor= new FileProcessor(encoder, updateLabel, fileProgressBar );
+        Settings settings=window.getSettings();
+        audioFileProcessor.setShowNotifications(settings.isShowProcessNotifications());
+        audioFileProcessor.setShowCompletedNotification(settings.isShowNotifcationOnProcessComplete());
+        ProgressWindow window= new ProgressWindow(audioFileProcessor);
+        progressWindow.getChildren().clear();
+        progressWindow.getChildren().add(window.getWindow());
+        stage.hide();// refresh stage so added ui  nodes  show
+        stage.show();
+        audioFileProcessor.manipulateFiles( fileListView.getItems());
     }
 }

@@ -6,7 +6,6 @@ import sample.AudioProcessors.ExtractAudioInformation;
 import sample.AudioProcessors.FindAudioFiles;
 import sample.AudioProcessors.RemoveDuplicateSongs;
 
-import java.rmi.AlreadyBoundException;
 import java.util.ArrayList;
 import java.util.List;
 public class MusicLibrary implements AudioInformationAddable, AudioInformationRemovable {
@@ -137,7 +136,7 @@ public Playlist getPlaylist(int number){
             AudioFileUtilities walker= new AudioFileUtilities();
           List<AudioFile> files= new FindAudioFiles(false).findAudioFiles(path);
            ExtractAudioInformation extract= new ExtractAudioInformation();
-          ArrayList<AudioInformation> information= extract.extractInformationUsingJAudioTagger(files);
+          ArrayList<AudioInformation> information= extract.extractAudioInformationFromFile(files);
           allSongs=information;
         }
    }

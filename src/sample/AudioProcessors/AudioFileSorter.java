@@ -20,8 +20,6 @@ import sample.Windows.FileProgressBar;
 import sample.Windows.UpdateLabel;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -201,7 +199,7 @@ public class AudioFileSorter implements  FileAction, AudioInformationAction {
                     return;
                 }
         }
-        AudioInformation song=extractAudioInformation.extractInformationUsingAudioTagger(audioFile);
+        AudioInformation song=extractAudioInformation.extractInformationUsingJAudioTagger(audioFile);
         song.setAudioFilePath(fileToMoveDestitnationPath+""+fileSeperator+""+fileToMove.getName());
         if(onCD==true){
             song.setWriteFieldsToFile(false);

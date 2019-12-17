@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import sample.AudioProcessors.CueSheets.CueSheetExeception;
 import sample.Library.AudioInformationAddable;
 import sample.Library.CueSheets.CueSheet;
-import sample.MainAudioWindow;
 import sample.Library.AudioInformation;
 import sample.Library.MusicLibrary;
 import sample.Library.Playlist;
@@ -255,7 +254,7 @@ public class GetAudioFiles  implements AudioProcess {
                                         audioFileSorter.getTracks().clear();
                                     }
                                     else {
-                                        AudioInformation information = extractAudioInformation.extractInformationUsingJAudioTagger(file);
+                                        AudioInformation information = extractAudioInformation.extractAudioInformationFromFile(file);
                                         if(onCD==true){
                                             information.setWriteFieldsToFile(false);
                                         }

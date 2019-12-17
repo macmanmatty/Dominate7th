@@ -44,7 +44,7 @@ public class ExtractAudioInformation {
         cueSheetReader = new CueSheetReader();
         fileSeperator=System.getProperty("file.separator");    }
 
-    public ArrayList<AudioInformation> extractInformationUsingJAudioTagger(List<AudioFile> audioFiles) { // extracts a list of of audio information from
+    public ArrayList<AudioInformation> extractAudioInformationFromFile(List<AudioFile> audioFiles) { // extracts a list of of audio information from
         // a list of audio files
         int size = audioFiles.size();
         for (int count = 0; count < size; count++) {
@@ -111,7 +111,7 @@ public class ExtractAudioInformation {
         return audioInformation;
     }
 
-    public AudioInformation extractInformationUsingAudioTagger(AudioFile file) {// extracts audio information  from a single audio file
+   public AudioInformation extractInformationUsingJAudioTagger(AudioFile file) {// extracts audio information  from a single audio file
         /*
         suports reading tags from
         Mp3, Mp4 (Mp4 audio, M4a and M4p audio), Ogg, Vorbis, Flac, Wav, Aiff, Dsf, and Wma
@@ -140,7 +140,7 @@ public class ExtractAudioInformation {
 
         return information;
     }
-    public AudioInformation extractInformationUsingJAudioTagger(File file) {// extracts audio information  from a single audio file
+    public AudioInformation extractAudioInformationFromFile(File file) {// extracts audio information  from a single audio file
         // attemps to use JAudioTagger to read the tags if Jaudiotagger cannot read them  tries using FFmpeg to read the tags
         AudioInformation audioInformation= new AudioInformation();
         audioInformation.setAudioFilePath(file.getAbsolutePath());
@@ -148,7 +148,7 @@ public class ExtractAudioInformation {
         try {
 
             AudioFile audioFile=AudioFileIO.read(file);
-           audioInformation= extractInformationUsingAudioTagger(audioFile);
+           audioInformation= extractInformationUsingJAudioTagger(audioFile);
             return  audioInformation;
 
 
@@ -172,7 +172,7 @@ public class ExtractAudioInformation {
 
 
 
-        public AudioInformation extractInformationUsingFFmpeg(File file) throws FrameGrabber.Exception {// extracts audio information  from a single audio file  that does NOT have supported  tag reding writing.
+        private AudioInformation extractInformationUsingFFmpeg(File file) throws FrameGrabber.Exception {// extracts audio information  from a single audio file  that does NOT have supported  tag reding writing.
         AudioInformation information = new AudioInformation(false); // don't write fields as  it is not supported with other file formats
         String audioFilePath = file.getAbsolutePath();
         information.setAudioFilePath(audioFilePath);
