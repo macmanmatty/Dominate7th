@@ -33,7 +33,7 @@ public class AudioFileSorter implements  FileAction, AudioInformationAction {
     private boolean sortByBitRate;
     private String sortFolderPath;
     private boolean renameAndMoveDuplicateFiles;
-    private AudioFileUtilities utilities;
+    private AudioFileUtilities utilities= new AudioFileUtilities();
     private int numberOfThreads=0;
     private int currentErrors;
     private boolean completed;
