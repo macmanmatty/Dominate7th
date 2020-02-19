@@ -183,9 +183,9 @@ public class AudioInformation { // plain old Data  class  that has simple string
     }
     public void setAlbum(String album) {
         if (writeFieldsToFile == true) {
-            boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.ARTIST, album, getAudioFile());
+            boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.ALBUM, album, getAudioFile());
             if(written==true) {
-                this.artist.set(album);
+                this.album.set(album);
             }
         }
         else{
@@ -202,7 +202,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.CATALOG_NO, catalogNo, getAudioFile());
             if(written==true) {
-                this.artist.set(catalogNo);
+                this.catalogNo.set(catalogNo);
             }
         }
         else{
@@ -216,7 +216,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
             if (writeFieldsToFile == true) {
                 boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.COMMENT, comment, getAudioFile());
                 if(written==true) {
-                    this.artist.set(comment);
+                    this.comment.set(comment);
                 }
 
 
@@ -232,7 +232,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
             if (writeFieldsToFile == true) {
                 boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.COMPOSER, composer, getAudioFile());
                 if(written==true) {
-                    this.artist.set(composer);
+                    this.composer.set(composer);
                 }
             }
 
@@ -247,7 +247,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.CONDUCTOR, conductor, getAudioFile());
             if(written==true) {
-                this.artist.set(conductor);
+                this.conductor.set(conductor);
             }
         }
         else{
@@ -261,7 +261,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.COPYRIGHT, copyright, getAudioFile());
             if(written==true) {
-                this.artist.set(copyright);
+                this.copyright.set(copyright);
             }
         }
         else{
@@ -276,7 +276,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
             if (writeFieldsToFile == true) {
                 boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.COUNTRY, country, getAudioFile());
                 if(written==true) {
-                    this.artist.set(country);
+                    this.country.set(country);
                 }
             }
         }
@@ -292,7 +292,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.DISC_NO, discNo, getAudioFile());
             if(written==true) {
-                this.artist.set(discNo);
+                this.discNo.set(discNo);
             }
 
         }
@@ -307,7 +307,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.DISC_TOTAL, discTotal, getAudioFile());
             if(written==true) {
-                this.artist.set(discTotal);
+                this.discTotal.set(discTotal);
             }
         }
         else{
@@ -321,7 +321,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.ENCODER, encoder, getAudioFile());
             if(written==true) {
-                this.artist.set(encoder);
+                this.encoder.set(encoder);
             }
         }
         else{
@@ -335,7 +335,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.ENGINEER, engineer, getAudioFile());
             if(written==true) {
-                this.artist.set(engineer);
+                this.encoder.set(engineer);
             }
         }
         else{
@@ -349,7 +349,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.ENSEMBLE, ensemble, getAudioFile());
             if(written==true) {
-                this.artist.set(ensemble);
+                this.ensemble.set(ensemble);
             }
         }
         else{
@@ -363,7 +363,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.GENRE, genre, getAudioFile());
             if(written==true) {
-                this.artist.set(genre);
+                this.genre.set(genre);
             }
 
         }
@@ -378,7 +378,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.GROUP, group, getAudioFile());
             if(written==true) {
-                this.artist.set(group);
+                this.group.set(group);
             }
         }
         else{
@@ -392,7 +392,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.INSTRUMENT, instrument, getAudioFile());
             if(written==true) {
-                this.artist.set(instrument);
+                this.instruemnt.set(instrument);
             }
         }
         else{
@@ -406,7 +406,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.LANGUAGE, language, getAudioFile());
             if(written==true) {
-                this.artist.set(language);
+                this.laugauge.set(language);
             }
         }
         else{
@@ -420,7 +420,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.LYRICIST, lyricist, getAudioFile());
             if(written==true) {
-                this.artist.set(lyricist);
+                this.lyricist.set(lyricist);
             }
         }
         else{
@@ -434,7 +434,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.LYRICS, lyrics, getAudioFile());
             if(written==true) {
-                this.artist.set(lyrics);
+                this.lyrics.set(lyrics);
             }
         }
         else{
@@ -448,7 +448,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.MEDIA, media, getAudioFile());
             if(written==true) {
-                this.artist.set(media);
+                this.media.set(media);
             }
         }
         else{
@@ -462,7 +462,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.PRODUCER, producer, getAudioFile());
             if(written==true) {
-                this.artist.set(producer);
+                this.producer.set(producer);
             }
         }
         else{
@@ -476,7 +476,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.ORIGINAL_ARTIST,originalArtist, getAudioFile());
             if(written==true) {
-                this.artist.set(originalArtist);
+                this.originalArtist.set(originalArtist);
             }
         }
         else{
@@ -490,7 +490,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.RANKING, ranking, getAudioFile());
             if(written==true) {
-                this.artist.set(ranking);
+                this.ranking.set(ranking);
             }
         }
         else{
@@ -504,7 +504,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.RATING, rating, getAudioFile());
             if(written==true) {
-                this.artist.set(rating);
+                this.rating.set(rating);
             }
         }
         else{
@@ -518,7 +518,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.RECORD_LABEL, recordLabel, getAudioFile());
             if(written==true) {
-                this.artist.set(recordLabel);
+                this.recordLabel.set(recordLabel);
             }
         }
         else{
@@ -539,7 +539,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.TITLE, title, getAudioFile());
             if(written==true) {
-                this.artist.set(title);
+                this.title.set(title);
             }
         }
         else{
@@ -553,7 +553,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.TRACK, track, getAudioFile());
             if(written==true) {
-                this.artist.set(track);
+                this.track.set(track);
             }
         }
         else{
@@ -567,7 +567,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.TRACK_TOTAL, trackTotal, getAudioFile());
             if(written==true) {
-                this.artist.set(trackTotal);
+                this.trackTotal.set(trackTotal);
             }
         }
         else{
@@ -581,7 +581,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
         if (writeFieldsToFile == true) {
             boolean written=extractAudioInformation.writeFieldsToFile(FieldKey.YEAR, year, getAudioFile());
             if(written==true) {
-                this.artist.set(year);
+                this.year.set(year);
             }
         }
         else{
