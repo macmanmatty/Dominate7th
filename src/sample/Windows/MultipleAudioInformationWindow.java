@@ -771,7 +771,7 @@ public class MultipleAudioInformationWindow {
             if(album.getText().isEmpty()==false) {
                 song.setAlbum(album.getText());
             }
-                     if(artist.getText().isEmpty()==false) {
+            if(artist.getText().isEmpty()==false) {
                          song.setArtist(artist.getText());
                      }
 

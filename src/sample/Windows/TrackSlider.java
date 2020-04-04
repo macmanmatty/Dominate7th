@@ -38,19 +38,6 @@ private MainAudioWindow window;
         });
         // also play  the song when mouse is clicked
 
-        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-
-                int time=valueProperty().intValue();
-                window.seekPlay(time);
-                window.setStartOffset(time);
-
-            }
-
-        });
-
-
 
 
 

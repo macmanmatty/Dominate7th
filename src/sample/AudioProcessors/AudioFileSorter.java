@@ -42,7 +42,7 @@ public class AudioFileSorter implements  FileAction, AudioInformationAction {
     private int albumCounter;
     private int artistCounter;
     private List<AudioInformation> songs= Collections.synchronizedList(new ArrayList<>());
-    ExtractAudioInformation extractAudioInformation= new ExtractAudioInformation();
+    private  ExtractAudioInformation extractAudioInformation= new ExtractAudioInformation();
     private ArrayList<File> filePaths = new ArrayList<File>();
     private CountDownLatch countDownLatch;
     private boolean getMissingTags;

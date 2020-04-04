@@ -25,7 +25,7 @@ public class LibraryLoader {//the loader class for library to seralize and deser
         builder.registerTypeAdapter(SimpleIntegerProperty.class, new SimpleIntegerAdapter());
         gson=builder.create();
     }
-    public MusicLibrary loadLibrary() {
+    public MusicLibrary loadLibrary() throws IOException, JsonParseException {
         try {
             BufferedReader input = new BufferedReader(new FileReader(libraryPath));
            //convert the json string back to object
@@ -39,22 +39,26 @@ public class LibraryLoader {//the loader class for library to seralize and deser
                 }
                 return library;
             } catch (JsonParseException e) {
+                MusicLibrary library=null;
                 input = new BufferedReader(new FileReader(backUpLibraryPath));
-                MusicLibrary library= gson.fromJson(input, MusicLibrary.class);
+                try {
+                     library = gson.fromJson(input, MusicLibrary.class);
+                }
+                catch (JsonParseException jpe) {
+                    throw new JsonParseException(" Back Up Library  at  "+backUpLibraryPath+ "could not be parsed");
+                }
                 saveLibrary(library);
                 return library;
             }
         } catch (FileNotFoundException e) {
             BufferedReader input = null;
-            try {
+
                 input = new BufferedReader(new FileReader(backUpLibraryPath));
                 MusicLibrary library = gson.fromJson(input, MusicLibrary.class);
                 saveLibrary(library);
                 return library;
-            } catch (FileNotFoundException e1) {
-            }
+
         }
-        return null;
     }
 
     public void saveLibrary(MusicLibrary library) {

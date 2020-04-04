@@ -744,11 +744,8 @@ newSongPlay=false;
             musicPlayer.setEnd(trackLength);
             musicPlayer.setVolume(volume);
             musicPlayer.setStartOffset(startOffset);
-            System.out.println("Track Start " + trackStart);
-            System.out.println("Track Start " + trackLength);
             trackSlider.setMin(0);
             trackSlider.setMax(trackLength);
-            System.out.println("TRack Start " + trackStart);
             double sliderWidth = trackLength * 3;
             if (sliderWidth > mainBox.getWidth() - 60) {
                 sliderWidth = mainBox.getWidth() - 60;
@@ -777,15 +774,14 @@ newSongPlay=false;
                 musicPlayer.stop();
                 musicPlayer.close();
                 startPlay();
-                System.out.println("Current PlaylistPane "+currentPlayListPane);
             }
         };
        Platform.runLater(runnable);
    }
-    public void seekPlay(int time){// starts playing of the current song at spefcied time
+    public void seekPlay(int time){// starts playing of the current song at specified  time
         startTime=time;
         audioFileChanged=false;
-        trackSlider.setValue(startTime); // set  the time on track sider
+        trackSlider.setValue(startTime); // set  the time on track slider
         trackTimerSeconds =startTime;
         if(musicPlayer!=null && musicPlayer.getPlayerState()== PlayerState.PLAYING){ // set volume, pan, and time and play song
            musicPlayer.seekPlay(time);
@@ -794,8 +790,11 @@ newSongPlay=false;
 
     }
     public void stopPlay(){
+
         musicPlayer.stop();
+        trackSlider.valueProperty().setValue(0);
         startTime=0;
+        startOffset=0;
         if(songTimer!=null) {
             songTimer.stop();
         }

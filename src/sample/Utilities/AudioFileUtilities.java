@@ -16,9 +16,8 @@ import sample.AcoustID.AcoustID;
 import sample.AcoustID.ChromaPrint;
 import sample.AudioProcessors.AudioCodec;
 import sample.Library.AudioInformation;
-import sample.Library.Settings;import javax.annotation.processing.Filer;
+
 import java.io.*;
-import java.net.URI;
 import java.nio.channels.FileChannel;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
@@ -26,12 +25,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;public class AudioFileUtilities  {
+import java.util.List;
+
+public class AudioFileUtilities  {
     private volatile ArrayList<File> files = new ArrayList<File>();
     private ArrayList<String> fileNames = new ArrayList<String>();
     private Character exclude = new Character('?'); // exclude files or folders  that start with this char
     private  ArrayList<File> directories = new ArrayList<File>();
-    private  List<String> codecExtensions = AudioCodec.getCodecExtensions(); // list of audio file extensions that FFmpeg Supports
+    private List<String> codecExtensions = AudioCodec.getCodecExtensions(); // list of audio file extensions that FFmpeg Supports
     private  List<String> imageExtensions = new ArrayList<>(); // list of supported images for album artwork
     private String fileSeperator;
     public AudioFileUtilities() {
