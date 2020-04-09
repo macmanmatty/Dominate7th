@@ -68,7 +68,7 @@ public class ProgressWindow {
 
 
     }
-    public void displayWindow(){ // called usng platform.runlater so it is  thread safe  basic ui box that displays  a progress  bar
+    public void displayWindow(){ // called using platform.runlater so it is  thread safe  basic ui box that displays  a progress  bar
         // and a label that updates with the  progress.
         Runnable runnable= new Runnable() {
             @Override

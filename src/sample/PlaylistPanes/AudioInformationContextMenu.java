@@ -123,7 +123,7 @@ public class AudioInformationContextMenu extends ContextMenu {
             playListItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    playList.addSongs(songs);
+                    playList.addSongs(pane.getSelectedSongs());
                 }
             });
             addSongs.getItems().add(playListItem);

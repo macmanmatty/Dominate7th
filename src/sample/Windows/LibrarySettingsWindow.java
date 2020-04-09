@@ -39,6 +39,8 @@ public class LibrarySettingsWindow {
     CheckBox copyFilesToLibraryFolder;
     CheckBox addAllSongsToLibrary;
     CheckBox showMiniPlayerOnMainWindowClose;
+    CheckBox displayPorgressWindowsForAddingSongs;
+
     Label libraryPath;
     
 
@@ -227,6 +229,16 @@ public class LibrarySettingsWindow {
 
             }
         });
+        displayPorgressWindowsForAddingSongs= new CheckBox("Display A Progress When Window  Adding Songs To Playlists ");
+        displayPorgressWindowsForAddingSongs.setSelected(settings.isDisplayProgressWindowsForAddingSongs());
+
+        displayPorgressWindowsForAddingSongs.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                settings.setDisplayProgressWindowsForAddingSongs(displayPorgressWindowsForAddingSongs.isSelected());
+
+            }
+        });
 
         showMiniPlayerOnMainWindowClose= new CheckBox("Show Smaller Player on Main Window Close");
         showMiniPlayerOnMainWindowClose.setSelected(settings.isShowMiniPlayerOnMainWindowClose());
@@ -318,6 +330,7 @@ public class LibrarySettingsWindow {
         preferencePane.getChildren().add(organizeLibraryByBitRate);
         preferencePane.getChildren().add(organizeLibraryByFileType);
         preferencePane.getChildren().add(scanLibraryForNewSongs);
+        preferencePane.getChildren().add(displayPorgressWindowsForAddingSongs);
 
 
 

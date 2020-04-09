@@ -26,26 +26,6 @@ public class PlaylistSettingsWindow {
         VBox preferencePane= new VBox();
         PlaylistSettings settings= playList.getPlaylistSettings();
 
-        HBox libraryBox= new HBox();
-
-        copyFilesToLibraryFolder= new CheckBox("Copy Files to Library Folder on Adding Them");
-        copyFilesToLibraryFolder.setSelected(settings.isMoveSongsToLibraryOnAdding());
-        copyFilesToLibraryFolder.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                settings.setMoveSongsToLibraryOnAdding(copyFilesToLibraryFolder.isSelected());
-                settings.setAddSongsToLibraryOnAdding(copyFilesToLibraryFolder.isSelected());
-            }
-        });
-        addSongsTolibrary= new CheckBox("Add Songs Library On Adding Them");
-        addSongsTolibrary.setSelected(settings.isAddSongsToLibraryOnAdding());
-        addSongsTolibrary.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                settings.setAddSongsToLibraryOnAdding(addSongsTolibrary.isSelected());
-            }
-        });
-        preferencePane.getChildren().add(copyFilesToLibraryFolder);
 
         stage.setScene(new Scene(preferencePane));
         stage.show();

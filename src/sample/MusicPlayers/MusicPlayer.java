@@ -236,4 +236,9 @@ public   class MusicPlayer {  // class for playing music files
         this.startOffset = startOffset;
     }
 
+    public int getTime(){
+        return  window.getTime();
+    }
+
+
 }

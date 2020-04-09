@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 public class DeviceInputThread {// looped  thread that calls a check method on various  system device getters.  it does this until intruppted
     private  Thread checkThread;
     private MainAudioWindow window;
+    private int counter;
 
     List<InputDevice> inputDevices = Collections.synchronizedList(new ArrayList<>());
 
@@ -80,6 +81,12 @@ public class DeviceInputThread {// looped  thread that calls a check method on v
             }
 
         }
+
+        if(counter%30==0){
+            window.getMainScene().setPressed(false);
+        }
+        counter++;
+
 
 
 

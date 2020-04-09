@@ -186,6 +186,12 @@ albumLabel= new Label();
     public List<FieldKey> getShuffleKeys() {
         return shuffleKeys;
     }
+
+    @Override
+    public List<AudioInformation> getSelectedSongs() {
+        return table.getSelectionModel().getSelectedItems();
+    }
+
     public  void searchAlbum(String album) {
         if(album.equalsIgnoreCase("All Albums")==false) {
             System.out.println("Searching Album " + album);

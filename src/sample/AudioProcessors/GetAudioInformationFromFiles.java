@@ -35,7 +35,9 @@ public class GetAudioInformationFromFiles implements AudioProcess {
     private String fileSeperator;
     private ExtractAudioInformation extractAudioInformation = new ExtractAudioInformation();
     public GetAudioInformationFromFiles(boolean showProgressWindows) {
-        this.showProgressWindows = showProgressWindows;
+
+        this(new UpdateLabel(), new FileProgressBar(), showProgressWindows, false);
+
     }
     public GetAudioInformationFromFiles( UpdateLabel updateLabel, FileProgressBar progressBar, boolean showProgressWindows, boolean onCD) {
         this.updateLabel = updateLabel;
@@ -56,7 +58,10 @@ public class GetAudioInformationFromFiles implements AudioProcess {
                     progressWindow.displayWindow();
                 }
                  countDownLatchUtilityThread = new CountDownLatch(1);
-                updateLabel.setText(numberOfFilesToProcess+ " of "+numberOfFilesToProcess +"Files Processed");
+                if(updateLabel!=null) {
+                    updateLabel.setText(numberOfFilesToProcess + " of " + numberOfFilesToProcess + "Files Processed");
+                }
+
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
@@ -77,7 +82,10 @@ public class GetAudioInformationFromFiles implements AudioProcess {
                     updateLabel.setText("Thread Iterrupted");
                     utilityThread.interrupt();
                 }
-                updateLabel.setText("operation Competed with " + errorMessages.size() + " errors");
+                if(updateLabel!=null) {
+                    updateLabel.setText("operation Competed with " + errorMessages.size() + " errors");
+                }
+
                 if(showCompletedNotification==true){
                     if(errorMessages.size()==0) {
                         notification.showAudioProcessNotification(processName + "operation Competed with " + errorMessages.size() + " errors", NotificationType.SUCCESS);
@@ -107,7 +115,10 @@ public class GetAudioInformationFromFiles implements AudioProcess {
         if(listOfFiles!=null){
         int size = listOfFiles.length;
         numberOfFilesToProcess = numberOfFilesToProcess + size;
-        progressBar.setFilesToProcess(numberOfFilesToProcess);
+        if(progressBar!=null) {
+            progressBar.setFilesToProcess(numberOfFilesToProcess);
+        }
+
         for (int count = 0; count < size; count++) {
             File file = listOfFiles[count];
             boolean read=false;
@@ -134,13 +145,22 @@ public class GetAudioInformationFromFiles implements AudioProcess {
                         }
                     }
                     numberOfFilesProcessed++;
-                    progressBar.setFilesProcessed(numberOfFilesProcessed);
+                    if(progressBar!=null) {
+                        progressBar.setFilesProcessed(numberOfFilesProcessed);
+                    }
                 } else if (file.isDirectory()) {
                     numberOfFilesProcessed++;
-                    progressBar.setFilesProcessed(numberOfFilesProcessed);
+                    if(progressBar!=null) {
+
+                        progressBar.setFilesProcessed(numberOfFilesProcessed);
+                    }
+
                     getAudioInformationFunction(listOfFiles[count].getPath());
                 }
-                updateLabel.setText(numberOfFilesToProcess + " of " + numberOfFilesToProcess + "Files Processed");
+                if(updateLabel!=null) {
+                    updateLabel.setText(numberOfFilesToProcess + " of " + numberOfFilesToProcess + "Files Processed");
+                }
+
             }
         }
         }

@@ -12,15 +12,15 @@ public class FFMpegPlayer implements Player {
     private  AudioFormat format;
     private FFmpegFrameGrabber frameGrabber;
    private  final  MusicPlayer player;
-   private volatile int playStartSeconds;
+   private volatile int playStartOffsetSeconds;// offset for playing for  playing of cue files
    private volatile int endSeconds;
     public FFMpegPlayer(MusicPlayer player) {
         this.player = player;
     }
     @Override
-    public boolean play(File audioFile, int startSeconds, int playStartSeconds, int endSeconds, float volume, float pan) { // plays a song with a given  j audiotagger audio file
+    public boolean play(File audioFile, int startSeconds, int playStartOffsetSeconds, int endSeconds, float volume, float pan) { // plays a song with a given  j audiotagger audio file
             frameGrabber = new FFmpegFrameGrabber(audioFile.getAbsolutePath());
-            this.playStartSeconds=playStartSeconds;
+            this.playStartOffsetSeconds =playStartOffsetSeconds;
             this.endSeconds = endSeconds;
         try {
             frameGrabber.start();
@@ -36,21 +36,26 @@ public class FFMpegPlayer implements Player {
             System.out.println("FPS "+framesPerSecond);
             System.out.println("FPS " + framesPerSecond);
             System.out.println("start seconds " + startSeconds);
-            System.out.println("play  start seconds " + playStartSeconds);
+            System.out.println("play  start seconds " + playStartOffsetSeconds);
+            System.out.println("end seconds " + endSeconds);
+
+
             if(endSeconds==0){
                 endSeconds=(int)(lengthInSeconds);
             }
-            double startFrame = ((startSeconds + playStartSeconds) * (framesPerSecond));// calculate start frame for ffmpeg.
+            double startFrame = ((startSeconds + playStartOffsetSeconds) * (framesPerSecond));// calculate start frame for ffmpeg.
             System.out.println("Frames " + frameGrabber.getLengthInAudioFrames() + " Start Frame " + startFrame);
             frameGrabber.setAudioFrameNumber((int) startFrame);// set the start frame.
            
             Thread thread=Thread.currentThread();
-            int frames = (int) (playStartSeconds*framesPerSecond);// total number of frames being played
+            int frames = (int) ((playStartOffsetSeconds)*framesPerSecond);// total number of frames being played
             int endFrame= (int) (endSeconds*framesPerSecond);// last frame number
+            System.out.println("End Frame " + endFrame);
+
             player.startTime();// start the displayed time counter
             while (!thread.interrupted()) {
                 Frame frame = frameGrabber.grabSamples();
-                if (frame == null || frames >= endFrame ) {// frame is null on the end point is reached terminate playing
+                if (frame == null || player.getTime()>endSeconds ) {// frame is null or the end frame is reached terminate playing
                     System.out.println("Stopped " + frame);
                     break;
                 }
@@ -67,8 +72,9 @@ public class FFMpegPlayer implements Player {
                     }
 
                     outBuffer.clear();
-                    frames++;
+                    ;
                 }
+                frames++;
             }
             frameGrabber.stop();
             frameGrabber.release();
@@ -108,7 +114,7 @@ public class FFMpegPlayer implements Player {
     }
     @Override
     public void setVolume(float volume) { // set the volume in Db's  for the source dataLine;
-        if(line!=null && line.isOpen()) { // cant set volume until line is opne
+        if(line!=null && line.isOpen()) { // cant set volume until line is open
             FloatControl control = (FloatControl) line.getControl(FloatControl.Type.MASTER_GAIN); // get the master gain for audio source
             float newGain = Math.min(Math.max(volume, control.getMinimum()), control.getMaximum()); // creates new gain level
             control.setValue(newGain); // set gain
@@ -138,7 +144,7 @@ public class FFMpegPlayer implements Player {
         if(endSeconds==0){
             endSeconds=(int)(lengthInSeconds);
         }
-        double startFrame = ((startSeconds + playStartSeconds) * (framesPerSecond));// calculate start frame for ffmpeg.
+        double startFrame = ((startSeconds + playStartOffsetSeconds) * (framesPerSecond));// calculate start frame for ffmpeg.
         System.out.println("Frames " + frameGrabber.getLengthInAudioFrames() + " Start Frame " + startFrame);
             frameGrabber.setAudioFrameNumber((int) startFrame);// set the start frame.
         }

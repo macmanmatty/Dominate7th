@@ -180,7 +180,19 @@ public class TopMenuBar {
                 new PlaylistSettingsWindow(window).showWindow();
             }
         });
+        playlistSettings.setDisable(true);
         menuItems.put("Playlist Settings", playlistSettings);
+
+
+
+        MenuItem editPlayList2= new MenuItem("Edit PlayList");
+        editPlayList2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                new PlaylistCreatorWindow(window, window.getCurrentPlaylistPane().getPlaylist()).displayWindow();
+            }
+        });
+        menuItems.put("Edit Playlist", editPlayList2);
         MenuItem addSongsToPlaylist= new MenuItem("Add Songs To Playlist");
         addSongsToPlaylist.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -205,17 +217,7 @@ public class TopMenuBar {
                 getAudioFiles.loadFiles(file.getPath(), true);            }
         });
         menuItems.put("Add Songs To Playlist", addSongsToPlaylist);
-        MenuItem editPlaylist= new MenuItem("Edit Playlist");
-        editPlaylist.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                PlaylistPane pane=window.getCurrentPlaylistPane();
-                if(pane!=null) {
-                    new PlaylistCreatorWindow(window, pane.getPlaylist()).displayWindow();
-                }
-            }
-        });
-        menuItems.put("Edit Playlist", editPlaylist);
+
         MenuItem newPlaylist= new MenuItem("New Playlist");
         newPlaylist.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -307,10 +309,10 @@ public class TopMenuBar {
         playlistPaneStyle.getItems().add(tablePlaylistPane);
         playlistPaneStyle.getItems().add(albumPlaylistPane);
         menuItems.put("Playlist Pane Style", playlistPaneStyle);
-        playlistMenu.getItems().add(playlistSettings);
-        playlistMenu.getItems().add(addSongsToPlaylist);
-        playlistMenu.getItems().add(editPlaylist);
+
+        playlistMenu.getItems().add(editPlayList2);
         playlistMenu.getItems().add(newPlaylist);
+        playlistMenu.getItems().add(addSongsToPlaylist);
         playlistMenu.getItems().add(shuffleMode);
         playlistMenu.getItems().add(playlistPaneStyle);
         playlistMenu.getItems().add(displayKeys);
@@ -399,12 +401,10 @@ public class TopMenuBar {
     }
     private void setSmartPlaylist(){
            getMenuItem("Add Songs To Playlist").setDisable(true);
-        getMenuItem("Edit Playlist").setText("Edit Playlist Filter");
         getMenuItem("Import CD").setDisable(true);
     }
         private void setRegularPlaylist(){
             getMenuItem("Add Songs To Playlist").setDisable(false);
-            getMenuItem("Edit Playlist").setText("Add Songs From Library");
             getMenuItem("Import CD").setDisable(true);
 
         }

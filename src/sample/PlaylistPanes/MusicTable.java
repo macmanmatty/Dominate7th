@@ -74,8 +74,8 @@ public class MusicTable extends TableView {
 
 
         getTable().setMinSize(400,200);
-       prefHeightProperty().bind(tablePlayListPane.getMainAudioWindow().getWindow().heightProperty());
-       prefWidthProperty().bind(tablePlayListPane.getMainAudioWindow().getWindow().widthProperty());
+       prefHeightProperty().bind(tablePlayListPane.getMainAudioWindow().getStage().heightProperty());
+       prefWidthProperty().bind(tablePlayListPane.getMainAudioWindow().getStage().widthProperty());
 
 
 
@@ -182,7 +182,7 @@ public class MusicTable extends TableView {
                        getAudioFiles.setCopyFilesThenMove(settings.isCopyFilesToLibraryFolder());
                        getAudioFiles.setSortByFileType(settings.isSortLibraryByFileType());
                        getAudioFiles.setGetMissingTags(settings.isGetMissingTagsOnAddingSongsToLibrary());
-                       List<AudioInformation> songs=getAudioFiles.loadFiles(files, true);
+                       List<AudioInformation> songs=getAudioFiles.loadFiles(files, settings.isDisplayProgressWindowsForAddingSongs());
                        System.out.println("Songs in table "+songs.size());
                        playlist.addSongs(songs);
                        if(settings.isAddAllAddedSongsToLibrary()){
@@ -193,7 +193,6 @@ public class MusicTable extends TableView {
 
                    }
                    refresh();
-
                    event.consume();
                }
            });

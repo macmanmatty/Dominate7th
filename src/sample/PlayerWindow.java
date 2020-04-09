@@ -25,11 +25,5 @@ public interface PlayerWindow {
      PlayerState getPlayerState();
      void seekPlay(int seek);
      void reloadPlaylistTabs();
-
-
-
-
-
-
-
+     int getTime();
 }

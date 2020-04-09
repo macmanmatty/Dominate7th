@@ -9,7 +9,8 @@ import sample.AudioProcessors.RemoveDuplicateSongs;
 import java.util.ArrayList;
 import java.util.List;
 public class MusicLibrary implements AudioInformationAddable, AudioInformationRemovable {
-    private List<Playlist> regularPlaylists = new ArrayList<Playlist>();
+    // the  class that hold all of the information about songs in a music  library
+    private List<Playlist> regularPlaylists = new ArrayList<Playlist>(); // regular playlists where s
     private List<SmartPlaylist> smartPlaylists= new ArrayList<>();
     private List<AudioInformation> allSongs= new ArrayList<>();
     private List<CueSheet> cueSheets= new ArrayList<>();
@@ -158,6 +159,12 @@ public Playlist getPlaylist(int number){
 
 
     }
+
+
+
+
+
+
 
     public boolean isCheckForDuplicates() {
         return checkForDuplicates;

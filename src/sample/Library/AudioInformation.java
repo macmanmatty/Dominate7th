@@ -72,6 +72,7 @@ public class AudioInformation { // plain old Data  class  that has simple string
     private long numberOfFrames;
     private boolean usesFrames;
     private boolean isTaggable=true;
+    private int libraryNumber;
     public AudioInformation() {
         writeFieldsToFile=true;
     }
@@ -742,5 +743,13 @@ public class AudioInformation { // plain old Data  class  that has simple string
 
     public void setTaggable(boolean taggable) {
         isTaggable = taggable;
+    }
+
+    public int getLibraryNumber() {
+        return libraryNumber;
+    }
+
+    public void setLibraryNumber(int libraryNumber) {
+        this.libraryNumber = libraryNumber;
     }
 }

@@ -29,7 +29,7 @@ public class MainScene extends Scene {
     private BooleanBinding editTracks;
     private BooleanBinding lockTrackSorting;
     private BooleanBinding displayMiniPlayer;
-    private  int  counter=0;
+    private  volatile boolean pressed;
     public MainScene( MainAudioWindow window, Parent root) {
         super(root);
         this.window=window;
@@ -56,9 +56,13 @@ public class MainScene extends Scene {
         volumeUP.addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                    if(newValue==true) {
+                if(pressed==false) {
+                    if (newValue == true) {
                         window.increaseVolume();
                     }
+                }
+
+                    pressed=true;
 
             }
         });
@@ -77,10 +81,13 @@ public class MainScene extends Scene {
         panLEFT.addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(newValue==true) {
+                if (pressed == false){
+                    if (newValue == true) {
 
-                    window.panLeft();
-                }
+                        window.panLeft();
+                    }
+            }
+                pressed=true;
 
                            }
         });
@@ -88,64 +95,93 @@ public class MainScene extends Scene {
         panRIGHT.addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(newValue==true) {
+                if (pressed == false) {
 
-                    window.panRight();
+                    if (newValue == true) {
+
+                        window.panRight();
+                    }
                 }
-
+                pressed=true;
                            }
         });
         panCENTER = keysPressed.get(KeyCode.COMMAND).and(keysPressed.get(KeyCode.C));
         panCENTER.addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(newValue==true) {
+                if (pressed == false) {
 
-                    window.panCenter();
+                    if (newValue == true) {
+
+                        window.panCenter();
+                    }
                 }
+                pressed=true;
+
             }
         });
         keysPressed.get(KeyCode.PLUS).addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(window.isMuted()){
-                    window.unMute();
+                if (pressed == false) {
+
+                    window.increaseVolume();
                 }
-                else {
-                    window.mute();
+                pressed=true;
+            }
+        });
+        keysPressed.get(KeyCode.MINUS).addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (pressed == false) {
+
+                    window.decreaseVolume();
                 }
+                pressed=true;
             }
         });
         keysPressed.get(KeyCode.SPACE).addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(window.getPlayerState()== PlayerState.PLAYING){
-                    window.pause();
+                if (pressed == false) {
+                    System.out.println("space bar was pressed " +window.getPlayerState());
+
+                    if (window.getPlayerState() == PlayerState.PLAYING) {
+                        window.pause();
+                    } else {
+                        window.play();
+                    }
                 }
-                else {
-                    window.play();
-                }
+                pressed=true;
             }
         });
         keysPressed.get(KeyCode.ESCAPE).addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(window.getPlayerState()== PlayerState.PLAYING){
-                    window.pause();
+                if (pressed == false) {
+
+                    if (window.isMuted()) {
+                        window.unMute();
+                    } else {
+                        window.mute();
+                    }
                 }
-                else {
-                    window.play();
-                }
+                pressed=true;
             }
         });
         playNext = keysPressed.get(KeyCode.ALT).and(keysPressed.get(KeyCode.RIGHT));
         playNext.addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(newValue==true) {
+                if (pressed == false) {
 
-                    window.playNext();
+                    if (newValue == true) {
+
+                        window.playNext();
+                    }
+
                 }
+                pressed=true;
 
             }
         });
@@ -153,10 +189,14 @@ public class MainScene extends Scene {
         newEmptyPlayList.addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(newValue==true) {
+                if (pressed == false) {
 
-                    window.newPlaylist();
+                    if (newValue == true) {
+
+                        window.newPlaylist();
+                    }
                 }
+                pressed=true;
 
             }
         });
@@ -164,10 +204,15 @@ public class MainScene extends Scene {
         newPlayList.addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(newValue==true) {
+                if (pressed == false) {
 
-                    new PlaylistCreatorWindow(window).displayWindow();
+                    if (newValue == true) {
+
+                        new PlaylistCreatorWindow(window).displayWindow();
+                    }
+
                 }
+                pressed=true;
 
             }
         });
@@ -175,10 +220,15 @@ public class MainScene extends Scene {
         fastFoward.addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(newValue==true) {
+                if (pressed == false) {
 
-                    window.fastForward();
+                    if (newValue == true) {
+
+                        window.fastForward();
+                    }
+
                 }
+                pressed=true;
 
             }
         });
@@ -186,10 +236,15 @@ public class MainScene extends Scene {
         rewind.addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(newValue==true) {
+                if (pressed == false) {
 
-                    window.rewind();
+                    if (newValue == true) {
+
+                        window.rewind();
+                    }
+
                 }
+                pressed=true;
 
             }
         });
@@ -197,23 +252,30 @@ public class MainScene extends Scene {
         restart.addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(newValue==true) {
+                if (pressed == false) {
 
-                    window.seekPlay(0);
+                    if (newValue == true) {
+
+                        window.seekPlay(0);
+                    }
                 }
 
+                pressed=true;
                             }
         });
        editTracks= keysPressed.get(KeyCode.COMMAND).and(keysPressed.get(KeyCode.E));
         editTracks.addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                boolean edit=window.getCurrentPlaylistPane().isEditTracks();
-                if(newValue==true) {
+                if (pressed == false) {
 
-                    window.getCurrentPlaylistPane().setEditTracks(!edit);
+                    boolean edit = window.getCurrentPlaylistPane().isEditTracks();
+                    if (newValue == true) {
+
+                        window.getCurrentPlaylistPane().setEditTracks(!edit);
+                    }
                 }
-
+                pressed=true;
 
             }
         });
@@ -221,11 +283,16 @@ public class MainScene extends Scene {
        lockTrackSorting.addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(newValue==true) {
+                if (pressed == false) {
 
-                    boolean lockTrackSorting = window.getCurrentPlaylistPane().isLockTrackSorting();
-                    window.getCurrentPlaylistPane().setLockTrackSorting(!lockTrackSorting);
+                    if (newValue == true) {
+
+                        boolean lockTrackSorting = window.getCurrentPlaylistPane().isLockTrackSorting();
+                        window.getCurrentPlaylistPane().setLockTrackSorting(!lockTrackSorting);
+                    }
+
                 }
+                pressed=true;
 
             }
         });
@@ -233,13 +300,24 @@ public class MainScene extends Scene {
         displayMiniPlayer.addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if(newValue==true) {
+                if (pressed == false) {
+
+                    if (newValue == true) {
 
 
-                   new MiniPlayerWindow(window).displayWindow();
+                        new MiniPlayerWindow(window).displayWindow();
+                    }
                 }
-
+                pressed=true;
             }
         });
+    }
+
+    public void setPressed(boolean pressed) {
+        this.pressed = pressed;
+    }
+
+    public boolean isPressed() {
+        return pressed;
     }
 }

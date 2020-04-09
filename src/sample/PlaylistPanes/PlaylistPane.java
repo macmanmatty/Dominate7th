@@ -38,6 +38,7 @@ public interface PlaylistPane {
      void setShuffle(boolean shuffle);
      boolean isShuffle();
      List<FieldKey> getShuffleKeys();
+     List<AudioInformation> getSelectedSongs();
 
 
 

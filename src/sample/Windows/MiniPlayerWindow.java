@@ -74,7 +74,9 @@ public class MiniPlayerWindow implements PlayerWindow {
         private SimpleStringProperty trackTimeString= new SimpleStringProperty("0 / 0");
         protected MainAudioWindow mainAudioWindow;
         protected Slider trackSlider;
-        public MiniPlayerWindow(MainAudioWindow mainAudioWindow) {
+
+
+    public MiniPlayerWindow(MainAudioWindow mainAudioWindow) {
             stage.initStyle(StageStyle.DECORATED);
             this.mainAudioWindow=mainAudioWindow;
             this.musicPlayer= mainAudioWindow.getMusicPlayer();
@@ -334,6 +336,12 @@ public class MiniPlayerWindow implements PlayerWindow {
     public void reloadPlaylistTabs() {
 
     }
+
+    @Override
+    public int getTime() {
+        return mainAudioWindow.getTime();
+    }
+
 
     public void stopPlay(){
            mainAudioWindow.stopPlay();

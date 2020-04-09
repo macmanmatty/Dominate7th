@@ -26,6 +26,8 @@ public class Settings {
     private boolean saveLibraryOnExit;
     private boolean copyFilesToLibraryFolder;
     private boolean addAllAddedSongsToLibrary;
+    private boolean displayProgressWindowsForAddingSongs;
+
     private AudioCodec defaultImportCodec=AudioCodec.AV_CODEC_ID_MP3;
     private int defaultImportBitRate=320000;
     private ChannelMode defaultImportChannelMode=ChannelMode.STEREO;
@@ -279,5 +281,13 @@ public class Settings {
 
     public void setShowMiniPlayerOnMainWindowClose(boolean showMiniPlayerOnMainWindowClose) {
         this.showMiniPlayerOnMainWindowClose = showMiniPlayerOnMainWindowClose;
+    }
+
+    public boolean isDisplayProgressWindowsForAddingSongs() {
+        return displayProgressWindowsForAddingSongs;
+    }
+
+    public void setDisplayProgressWindowsForAddingSongs(boolean displayProgressWindowsForAddingSongs) {
+        this.displayProgressWindowsForAddingSongs = displayProgressWindowsForAddingSongs;
     }
 }

@@ -65,7 +65,6 @@ public class MainAudioWindow  implements  PlayerWindow{
   protected int playModeNumber=3; // playmode numbers
     protected SystemInfo systemInfo;
     protected VBox mainBox= new VBox();
-
     protected Notifications notifications = new Notifications();
     protected int currentPlaylistNumber;
     protected AudioFileUtilities audioFileUtilities;
@@ -119,39 +118,30 @@ public class MainAudioWindow  implements  PlayerWindow{
     };
    private  int trackLength; // the current track /song length in trackTimerSeconds
    private  int trackTimerSeconds; // trackTimerSeconds for the timer
-    private int trackStart;// when the tracks starts used for songs with cue sheets
+    private int cueTrackStart;// when the tracks starts used for songs with cue sheets
    private  String totalTimeString="";
     private SimpleStringProperty trackTimeString= new SimpleStringProperty("0 / 0");
     protected boolean notifyOnPlayStart;
     protected DeviceInputThread deviceInputThread;
-    protected int startOffset;
+    protected int startOffset;// startOffset seeking play
+    MainScene mainScene;
     public MainAudioWindow(Stage stage, MusicLibrary library, SystemInfo systemInfo) {
         this.stage = stage;
         stage.initStyle(StageStyle.DECORATED);
         loader= new LibraryLoader( systemInfo.getUserHomePath(),systemInfo.getFileSeperator());
-        System.out.println("Finished Loading...");
         this.library=library;
         this.systemInfo = systemInfo;
         audioFileUtilities=new AudioFileUtilities();
-
-
-
         // save library changes on closing
         stage.setOnCloseRequest(event -> {
-
-
             closeApp();
         });
-
         stage.setOnHidden(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
-
                 if(settings.isShowMiniPlayerOnMainWindowClose()){
-
                     new MiniPlayerWindow(getAudioWindow()).displayWindow();
                 }
-
             }
         });
 
@@ -201,13 +191,9 @@ public class MainAudioWindow  implements  PlayerWindow{
                     public void changed(ObservableValue<? extends Tab> old,
                                         Tab oldTab, Tab newTab) {
                         if (newTab != null) {
-
                             PlaylistPane pane = ((PlaylistTab) newTab).getPlaylistPane();
                             setCurrentPlaylistPane(pane);
-
-
                         }
-                        System.out.println("Current PlaylistPane "+currentPlayListPane);
                     }
                 });
         // make the buttons
@@ -297,7 +283,6 @@ public class MainAudioWindow  implements  PlayerWindow{
                 rewind();
             }
         });
-
         nextImage=new Button();
         image = new Image("/imageNext.png");
         imageView = new ImageView(image);
@@ -345,7 +330,6 @@ public class MainAudioWindow  implements  PlayerWindow{
                 if(musicPlayer!=null){
                     musicPlayer.setVolume(volume);
                 }
-
                 volumeLabel.setText(volume+" DB");
             }
         });
@@ -504,7 +488,6 @@ catch (IllegalArgumentException e){
         Tab tab= playlist.getPlaylistTab();
         panes.set(playlist.getTabNumber(),playlist.getPane());
         tab.setContent(playlist.getPane().getPlaylistWindow());
-
        refreshStage();
     }
     public void addPlaylist(Playlist playlist){ // adds a play list to the  music library  and  new tab  on the tab pane for it
@@ -522,7 +505,6 @@ catch (IllegalArgumentException e){
         else {
             pane = new TablePlaylistPane(playlist, this);
         }
-
         pane.makePane();
         panes.add(pane);
         Tab tab= new PlaylistTab(playlist.getName() , playlist, pane, this);
@@ -531,10 +513,6 @@ catch (IllegalArgumentException e){
         stage.hide();
         stage.show();
     }
-
-
-
-
     public void deletePlaylist(Playlist playlist){ // // removes  a play list from the  music library  and  it's corrosponding  tab  on the tab pane for it
         if(playlist instanceof SmartPlaylist){
             library.getSmartPlaylists().remove(playlist);
@@ -544,9 +522,6 @@ catch (IllegalArgumentException e){
         }
         tabPane.getTabs().remove(playlist.getPlaylistTab());
         }
-
-
-
    public  void displayWindow() {// ui code for showing the window with the playlist pane  and buttons for playing music and slider for seeking music
        makeButtons();
         loadPlaylistPanes();
@@ -624,11 +599,11 @@ catch (IllegalArgumentException e){
        trackTime.setSpacing(15);
        mainBox.getChildren().add(trackSliderBox);
        mainBox.getChildren().add(buttons);
-       stage.setScene(new MainScene(this, mainBox));
+       mainScene= new MainScene(this, mainBox);
+       stage.setScene(mainScene);
        stage.show();
        libraryFolderCheck();
        deviceInputThread = new DeviceInputThread(this);
-
        deviceInputThread.start();
    }
     public  void reloadPlaylistTabs(){// ui code for showing the window with the playlist pane  and buttons for playing music and slider for seeking music
@@ -650,7 +625,6 @@ catch (IllegalArgumentException e){
         size=devicePlaylists.size();
         for(int count=0; count<size; count++){
             Playlist playlist =devicePlaylists.get(count);
-
             String name = playlist.getName();
             if (name == null || name.isEmpty()) {
                 name = "Playlist " + count;
@@ -658,11 +632,12 @@ catch (IllegalArgumentException e){
             }
             tabPane.getTabs().add(playlist.getPlaylistTab());
             panes.add(playlist.getPane());        }
-
-
-
         }
-   public void libraryFolderCheck(){
+    @Override
+    public int getTime() {
+        return trackTimerSeconds;
+    }
+    public void libraryFolderCheck(){
        String libraryPath=library.getSettings().getLibraryPath();
        if(libraryPath==null || libraryPath.isEmpty()){
            new OptionPane().showSetLibraryFolderPane(this);
@@ -704,9 +679,9 @@ newSongPlay=false;
                             startPlay(); // create a new player in music player class
                         }
                         case PLAYING:
-                            if(audioFileChanged==true  ){
-                                startTime=0;
-                                trackTimerSeconds =0;
+                            if(audioFileChanged==true  ) {
+                                startTime = 0;
+                                trackTimerSeconds = 0;
                                 musicPlayer.stop(); // stop current song
                                 musicPlayer.close(); // close current player
                                 startPlay(); // create new player in music player class
@@ -737,10 +712,10 @@ newSongPlay=false;
             setCurrentTrackTitle(currentSong.getTitle());
             getCurrentImages(currentSong);
             trackLength = (int) currentSong.getTrackLengthNumber();
-            trackStart = currentSong.getCueStart();
+            cueTrackStart = currentSong.getCueStart();
             //musicPlayer.setStartOffset(trackStart);
             totalTimeString = FormatTime.formatTimeWithColons(trackLength);
-            musicPlayer.setStart(trackStart);
+            musicPlayer.setStart(cueTrackStart);
             musicPlayer.setEnd(trackLength);
             musicPlayer.setVolume(volume);
             musicPlayer.setStartOffset(startOffset);
@@ -758,7 +733,6 @@ newSongPlay=false;
             newSongPlay = true;
             trackTimerSeconds = startOffset;
    }
-
    }
    public  void playNext(){
         Runnable runnable= new Runnable() {
@@ -784,13 +758,11 @@ newSongPlay=false;
         trackSlider.setValue(startTime); // set  the time on track slider
         trackTimerSeconds =startTime;
         if(musicPlayer!=null && musicPlayer.getPlayerState()== PlayerState.PLAYING){ // set volume, pan, and time and play song
-           musicPlayer.seekPlay(time);
+           musicPlayer.seekPlay(time+cueTrackStart);
             newSongPlay=true;
         }
-
     }
     public void stopPlay(){
-
         musicPlayer.stop();
         trackSlider.valueProperty().setValue(0);
         startTime=0;
@@ -837,7 +809,6 @@ newSongPlay=false;
         if(audioFile!=null) {
             this.audioFileExtension = audioFileUtilities.getExtensionOfFile(audioFile);
         }
-
     }
     public void setCurrentSong(AudioInformation currentSong){
         if(this.currentSong!=null) {
@@ -862,13 +833,10 @@ newSongPlay=false;
             if(audioFile!=null) {
                 tag = audioFile.getTag();
             }
-
         }
-
         if(tag!=null) {
             List<Artwork> albumArtwork = tag.getArtworkList();
             int size = albumArtwork.size();
-            System.out.println("Imbedded artwork  " + albumArtwork.size());
             for (int count = 0; count < size; count++) {
                 byte[] b = albumArtwork.get(count).getBinaryData();
                 if (b != null) {
@@ -970,13 +938,13 @@ newSongPlay=false;
         if(menuBar!=null) {
             menuBar.updateMenusToPlaylistPane(pane);
         }
-
         }
     public void repeatSong() {
         Runnable runnable= new Runnable() {
             @Override
             public void run() {
                 startTime=0;
+                startOffset=0;
                 songTimer.stop();
                 songTimer.start();
                 trackSlider.setValue(0);
@@ -998,22 +966,18 @@ newSongPlay=false;
         };
         Platform.runLater(runnable);
     }
-
     public int getStartOffset() {
         return startOffset;
     }
-
     public void setStartOffset(int startOffset) {
         this.startOffset = startOffset;
     }
-
     public boolean isAudioFileChanged() {
         return audioFileChanged;
     }
     public MainAudioWindow getAudioWindow(){
         return this;
     }
-
     public Stage getStage() {
         return stage;
     }
@@ -1038,55 +1002,47 @@ newSongPlay=false;
      public void removePane(int number){
         panes.remove(number);
      }
-
     public AnimationTimer getSongTimer() {
         return songTimer;
     }
-
     public SystemInfo getSystemInfo() {
         return systemInfo;
     }
-
     public MusicPlayer getMusicPlayer() {
         return musicPlayer;
     }
-
     public TrackSlider getTrackSlider() {
         return trackSlider;
     }
-
     public Slider getVolumeControl() {
         return volumeControl;
     }
-
     public Slider getPanControl() {
         return panControl;
     }
-
-
     public ImageView getAlbumImage() {
         return albumImage;
     }
-
     public TextFlow getCurrentTrackLabel() {
         return currentTrackLabel;
     }
-
     public TextFlow getCurrentArtistLabel() {
         return currentArtistLabel;
     }
-
     public TextFlow getCurrentAlbumLabel() {
         return currentAlbumLabel;
     }
-
     public SimpleStringProperty getTrackTimeString() {
         return trackTimeString;
     }
-
     public Label getVolumeLabel() {
         return volumeLabel;
     }
+    public int getTrackTimerSeconds() {
+        return trackTimerSeconds;
+    }
 
-
+    public MainScene getMainScene() {
+        return mainScene;
+    }
 }
