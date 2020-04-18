@@ -788,10 +788,13 @@ public class MultipleAudioInformationWindow {
             String path=files.get(count).getAbsolutePath();
             Artwork artwork= new StandardArtwork();
             try {
-                FileInputStream input= new FileInputStream(path);
-                artwork.setBinaryData(IOUtils.toByteArray(path));
+                FileInputStream fileInputStream= new FileInputStream(path);
+                artwork.setBinaryData(IOUtils.toByteArray(fileInputStream));
                 artwork.setImageUrl(path);
-                songsArtwork.add(artwork);
+                if(artwork!=null) {
+                    songsArtwork.add(artwork);
+                }
+
 
                 Image fxImage = new Image("file:" + path);
             ImageView fxImageView = new ImageView(fxImage);
@@ -816,17 +819,18 @@ public class MultipleAudioInformationWindow {
 
     public void addArtToSongsAsUrl(List<Artwork> songsArtwork){
 
-            int size=songs.size();
-            int size2=songsArtwork.size();
+            int numberOfSongs=songs.size();
+            int artworksSize=songsArtwork.size();
 
             if(songsArtwork.size()>0) {
-                for (int count = 0; count < size; count++) {
+                for (int count = 0; count < numberOfSongs; count++) {
                     AudioInformation song = songs.get(count);
-                    for (int count2 = 0; count2 < size2; count2++) {
+                    for (int count2 = 0; count2 < artworksSize; count2++) {
                         try {
                             Tag tag=song.getAudioFile().getTagOrCreateAndSetDefault();
                             if(tag!=null){
-                            song.getAudioFile().getTag().setField(songsArtwork.get(count2));}
+                            tag.setField(songsArtwork.get(count2));
+                            }
                         } catch (FieldDataInvalidException e) {
                             e.printStackTrace();
                         }
