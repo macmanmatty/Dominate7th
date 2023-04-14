@@ -17,7 +17,6 @@ import java.io.IOException;
 
 public class Main extends Application {
     MusicLibrary library;
-    SystemInfo info =new SystemInfo();
 
     @Override
     public void init() throws Exception {
@@ -25,8 +24,8 @@ public class Main extends Application {
         super.init();
         library= new MusicLibrary();
 
-        String userHomePath=info.getUserHomePath();
-        String fileSeperator=info.getFileSeperator();
+        String userHomePath=SystemInfo.getUserHomePath();
+        String fileSeperator=SystemInfo.getFileSeperator();
         LibraryLoader loader= new LibraryLoader(userHomePath, fileSeperator);
         File file= new File(userHomePath+fileSeperator+"dominate7th"+fileSeperator+"library.json");
 
@@ -76,7 +75,7 @@ public class Main extends Application {
 
         MainAudioWindow window=null;
 
-        window= new MainAudioWindow(primaryStage, library, info);
+        window= new MainAudioWindow(primaryStage, library);
         window.displayWindow();
 
 

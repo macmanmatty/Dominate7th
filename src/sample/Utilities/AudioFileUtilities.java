@@ -113,6 +113,9 @@ public class AudioFileUtilities  {
         }
         return files;
     }
+
+    //finds all files in a given directory
+
     public ArrayList<File> findFiles(List<File> filesToSearch) {
         files.clear();
         int size=filesToSearch.size();
@@ -135,6 +138,8 @@ public class AudioFileUtilities  {
       
         return this.files;
     }
+
+    //finds all files in a given directory  that match the given extensions
     public ArrayList<File> findFiles(List<File> filesToSearch, List<String> extensions) {
         files.clear();
         int size=filesToSearch.size();
@@ -222,9 +227,9 @@ public class AudioFileUtilities  {
         findFiles(path);
         return fileNames;
     }
-    public boolean isAudioCopy(File file1, File file2){ // gets a chormaprint audio foot print  for  2 audio files and determines if they are the same
+    public boolean isAudioCopy( boolean exactCopy, File file1, File file2){ // gets a chormaprint audio foot print  for  2 audio files and determines if they are the same
         // return true if they are or false if they are not or if either of the two given files is not an audio file or the two files don't have the format
-        // track length , bitrate or duration
+        // track length , bitrate or duration if exact copy=true fpcalc must determine that files files are equal for true to be returned.
         if(!(isAudioFile(file1))|| !(isAudioFile(file2))){ // check if the files are  audio files
             return false;
         }
@@ -266,7 +271,7 @@ public class AudioFileUtilities  {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
+        return !exactCopy;
     }
     public char getExclude() {
         return exclude;
@@ -297,6 +302,7 @@ public class AudioFileUtilities  {
             e.printStackTrace();
         }
     }
+    // renames a duplicate file until  there is no file witha given in the current directory
     public File renameDuplicateFile(File fileToMove, File directory) {
         String newName = "";
         boolean duplicateName = true;
@@ -324,6 +330,7 @@ public class AudioFileUtilities  {
         }
         return false;
     }
+
    private File  reNameFile(File fileToMove, String newName){
         File renamedFile=  new File(fileToMove.getParentFile().getAbsolutePath()+fileSeperator+newName);
         fileToMove.renameTo(renamedFile);
@@ -340,6 +347,8 @@ public class AudioFileUtilities  {
 
 
 
+
+    // makes a copy of file then moves it  using Files.createDirectories to create the path if it does not exist
     public File copyThenMoveFile(File file, File moveDirectory) throws IOException { // copies  file to new directory and makes the directory if it doesn't allready exist aka copy then move
         if(moveDirectory.exists()==false){
                 Files.createDirectories(Paths.get(moveDirectory.getAbsolutePath()));
@@ -365,6 +374,8 @@ public class AudioFileUtilities  {
         
     }
 
+
+        // copies data from one file to another  usinga file stream
         public  void copyFileToFile(File in, File out) throws IOException{
 
             FileChannel inChannel = new

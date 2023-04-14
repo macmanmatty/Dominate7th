@@ -313,7 +313,6 @@ System.out.println("Updating Pane...");
     public void setAudioInformation(AudioInformation information){
         String album=information.getAlbum();
         String artist=information.getArtist();
-        window.setAudioFile(information.getPhysicalFile());
         window.setCurrentSong(information);
         previousPlayedArtist=artist;
         previousPlayedAlbum=album;

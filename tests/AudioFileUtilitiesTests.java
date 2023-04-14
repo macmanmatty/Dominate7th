@@ -16,23 +16,17 @@ public class AudioFileUtilitiesTests {
         String extension= utilities.getExtensionOfFile(new File("/Users/jessematty/Desktop/cc.mp3"));
         assertEquals(extension, "mp3");
 
-
-
     }
 
 
     @Test
 
     public void fileCompareTest(){
-
-
         File file= new File("/Users/jessematty/Desktop/cc.mp3");
         File file2= new File("/Users/jessematty/Desktop/cc1.mp3");
         AudioFileUtilities utilities= new AudioFileUtilities();
-        boolean copy= utilities.isAudioCopy(file, file2);
+        boolean copy= utilities.isAudioCopy( true, file, file2);
         assertEquals(copy, true);
-
-
 
     }
 
@@ -44,7 +38,7 @@ public class AudioFileUtilitiesTests {
         File file= new File("/Users/jessematty/Desktop/cc.mp3");
         File file2= new File("/Users/jessematty/Desktop/cc2.mp3");
         AudioFileUtilities utilities= new AudioFileUtilities();
-        boolean copy= utilities.isAudioCopy(file, file2);
+        boolean copy= utilities.isAudioCopy(true, file, file2);
         assertEquals(copy, false);
 
 

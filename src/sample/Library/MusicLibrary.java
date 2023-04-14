@@ -5,9 +5,15 @@ import sample.Utilities.AudioFileUtilities;
 import sample.AudioProcessors.ExtractAudioInformation;
 import sample.AudioProcessors.FindAudioFiles;
 import sample.AudioProcessors.RemoveDuplicateSongs;
+import sample.Utilities.SystemInfo;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+
 public class MusicLibrary implements AudioInformationAddable, AudioInformationRemovable {
     // the  class that hold all of the information about songs in a music  library
     private List<Playlist> regularPlaylists = new ArrayList<Playlist>(); // regular playlists where s
@@ -192,6 +198,73 @@ public Playlist getPlaylist(int number){
 
 
     }
+
+
+
+
+
+// removes songs with a missing audio file from the library
+
+    public void removeNonExistingSongsFromLibrary() {
+
+
+                Iterator<AudioInformation> informationIterator = allSongs.iterator();
+                while (informationIterator.hasNext()) {
+
+                    AudioInformation information = informationIterator.next();
+
+                    File file = new File(information.getAudioFilePath());
+                    if (file.exists()) {
+                        continue;
+                    } else {
+
+                        informationIterator.remove();
+                    }
+
+
+                }
+
+
+
+
+}
+
+
+
+
+
+// removes songs with a missing audio file from all of the playlists in the library
+            public void removeNonExistingSongsFromPlaylists() {
+
+
+
+
+                int size = regularPlaylists.size();
+                for (int count = 0; count < size; count++) {
+                    List<AudioInformation> allSongs = regularPlaylists.get(count).getAllSongs();
+                    Iterator<AudioInformation> informationIterator = allSongs.iterator();
+                    while (informationIterator.hasNext()) {
+
+                        AudioInformation information = informationIterator.next();
+
+                        File file = new File(information.getAudioFilePath());
+                        if (file.exists()) {
+                            continue;
+                        } else {
+
+                            informationIterator.remove();
+                        }
+
+
+                    }
+
+                }
+
+
+
+
+    }
+
 
 
 

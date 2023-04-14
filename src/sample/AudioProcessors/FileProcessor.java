@@ -66,7 +66,7 @@ public class FileProcessor implements AudioProcess {
         this.externalCountDownLatch = externalCountDownLatch;
     }
 
-    public void manipulateFiles(String path) { // recusivly finds all files in a given directory and manipulates them  with  the given audio file action.
+    public void manipulateFiles(String path) { // recursively finds all files in a given directory and manipulates them  with  the given audio file action.
 
 
         action.setUpdateLabel(updateLabel);

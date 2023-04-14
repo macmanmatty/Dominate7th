@@ -847,13 +847,11 @@ public class MultipleAudioInformationWindow {
 
 
         int artSize=songsArtwork.size();
-        System.out.println("Artwork "+ songsArtwork.size());
         if(artSize>0){
             int songSize=songs.size();
             for(int count=0; count<songSize; count++){
                 AudioInformation song=songs.get(count);
                 AudioFile audioFile=song.getAudioFile();
-                System.out.println("AudioFile "+ audioFile);
 
                 for(int count2=0; count2<artSize; count2++) {
                     try {
@@ -864,7 +862,7 @@ public class MultipleAudioInformationWindow {
                             }
                         }
                     } catch (FieldDataInvalidException e) {
-                        e.printStackTrace();
+                        new OptionPane().showOptionPane("Cannot Write to Audio File "+e.getMessage(), "OK");
                     }
                 }
                 try {

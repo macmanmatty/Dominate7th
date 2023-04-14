@@ -1,5 +1,6 @@
 package sample.Library;
 
+import javafx.scene.control.CheckBox;
 import org.jaudiotagger.tag.FieldKey;
 import sample.AudioProcessors.AudioCodec;
 import sample.AudioProcessors.Encoders.ChannelMode;
@@ -27,6 +28,9 @@ public class Settings {
     private boolean copyFilesToLibraryFolder;
     private boolean addAllAddedSongsToLibrary;
     private boolean displayProgressWindowsForAddingSongs;
+    private boolean removeSongsWithMissingFilesOnDiscovery;
+    private boolean  askToFindMissingFilesForSongs;
+
 
     private AudioCodec defaultImportCodec=AudioCodec.AV_CODEC_ID_MP3;
     private int defaultImportBitRate=320000;
@@ -289,5 +293,21 @@ public class Settings {
 
     public void setDisplayProgressWindowsForAddingSongs(boolean displayProgressWindowsForAddingSongs) {
         this.displayProgressWindowsForAddingSongs = displayProgressWindowsForAddingSongs;
+    }
+
+    public boolean isRemoveSongsWithMissingFilesOnDiscovery() {
+        return removeSongsWithMissingFilesOnDiscovery;
+    }
+
+    public void setRemoveSongsWithMissingFilesOnDiscovery(boolean removeSongsWithMissingFilesOnDiscovery) {
+        this.removeSongsWithMissingFilesOnDiscovery = removeSongsWithMissingFilesOnDiscovery;
+    }
+
+    public boolean isAskToFindMissingFilesForSongs() {
+        return askToFindMissingFilesForSongs;
+    }
+
+    public void setAskToFindMissingFilesForSongs(boolean askToFindMissingFilesForSongs) {
+        this.askToFindMissingFilesForSongs = askToFindMissingFilesForSongs;
     }
 }

@@ -418,10 +418,6 @@ public class ExtractAudioInformation {
             return file;
 
         }
-        else{
-
-            new OptionPane().showLocateFilePane(information);
-        }
 
         return null;
 

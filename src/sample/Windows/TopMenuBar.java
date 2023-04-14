@@ -70,7 +70,6 @@ public class TopMenuBar {
                AudioInformation information=new ExtractAudioInformation().extractAudioInformationFromFile(file);
                window.getCurrentPlaylistPane().getPlaylist().addSong(information);
                window.setCurrentSong(information);
-               window.setAudioFile(information.getPhysicalFile());
                window.startPlay();
             }
         });

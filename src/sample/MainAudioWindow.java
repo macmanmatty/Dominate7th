@@ -43,6 +43,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 public class MainAudioWindow  implements  PlayerWindow{
    protected MusicPlayer musicPlayer;// the music player class
    protected boolean audioFileChanged;
@@ -74,7 +75,7 @@ public class MainAudioWindow  implements  PlayerWindow{
   protected Settings settings= new Settings();
   protected TabPane tabPane= new TabPane();// the tabe pane  for all of the playlists;
   protected AudioInformation currentSong;// the current song
-  protected PlaylistPane currentPlayListPane;// current playlist pane  showing song information
+  protected PlaylistPane currentPlaylistPane;// current playlist pane  showing song information
   protected ImageView albumImage= new ImageView();// the image view for album image;
     protected List<Image> albumArtworkImages=  new ArrayList<>();
     protected ArrayList<PlaylistPane> panes= new ArrayList<>(); // all of the playlist panes
@@ -125,10 +126,12 @@ public class MainAudioWindow  implements  PlayerWindow{
     protected DeviceInputThread deviceInputThread;
     protected int startOffset;// startOffset seeking play
     MainScene mainScene;
-    public MainAudioWindow(Stage stage, MusicLibrary library, SystemInfo systemInfo) {
+    private boolean findFile;
+
+    public MainAudioWindow(Stage stage, MusicLibrary library) {
         this.stage = stage;
         stage.initStyle(StageStyle.DECORATED);
-        loader= new LibraryLoader( systemInfo.getUserHomePath(),systemInfo.getFileSeperator());
+        loader= new LibraryLoader( SystemInfo.getUserHomePath(),SystemInfo.getFileSeperator());
         this.library=library;
         this.systemInfo = systemInfo;
         audioFileUtilities=new AudioFileUtilities();
@@ -144,6 +147,8 @@ public class MainAudioWindow  implements  PlayerWindow{
                 }
             }
         });
+
+        findFile=getLibrary().getSettings().isAskToFindMissingFilesForSongs();
 
 
     }
@@ -590,9 +595,9 @@ catch (IllegalArgumentException e){
        mainBox.getChildren().add(header);
        mainBox.getChildren().add(tabPane);
        mainBox.setSpacing(5);
-       if (currentPlayListPane != null) {
-           setCurrentPlaylistPane(currentPlayListPane);
-           mainBox.getChildren().add(currentPlayListPane.getPlaylistWindow());
+       if (currentPlaylistPane != null) {
+           setCurrentPlaylistPane(currentPlaylistPane);
+           mainBox.getChildren().add(currentPlaylistPane.getPlaylistWindow());
        }
        HBox trackTime = new HBox(trackSlider, trackTimeLabel);
        VBox trackSliderBox = new VBox(trackTime);
@@ -738,13 +743,13 @@ newSongPlay=false;
         Runnable runnable= new Runnable() {
             @Override
             public void run() {
-                currentSong=currentPlayListPane.getNextSong();
                 trackSlider.setValue(0);
                 startOffset=0;
                 songTimer.stop();
                 startTime=0;
                 trackTimerSeconds =0;
-                audioFile=currentSong.getPhysicalFile();
+                getAudioFileToPlay();
+
                 musicPlayer.stop();
                 musicPlayer.close();
                 startPlay();
@@ -752,6 +757,51 @@ newSongPlay=false;
         };
        Platform.runLater(runnable);
    }
+
+   private void getAudioFileToPlay(){
+       currentSong= currentPlaylistPane.getNextSong();
+
+       audioFile=currentSong.getPhysicalFile();
+       System.out.println(audioFile + " "+findFile);
+       boolean removeSongsWithMissingFiles=library.getSettings().isRemoveSongsWithMissingFilesOnDiscovery();
+       if(audioFile==null && findFile==true && removeSongsWithMissingFiles==false ){
+                   new OptionPane().showLocateFilePane(currentSong);
+
+       }
+
+
+       else {
+           if(removeSongsWithMissingFiles){
+               library.getAllSongs().remove(currentSong);
+               currentPlaylistPane.getPlaylist().removeSong(currentSong);
+           }
+           while (audioFile==null){
+               currentSong= currentPlaylistPane.getNextSong();
+               audioFile=currentSong.getPhysicalFile();
+               if(audioFile!=null){
+                   break;
+               }
+
+               if(removeSongsWithMissingFiles){
+                   library.getAllSongs().remove(currentSong);
+                   currentPlaylistPane.getPlaylist().removeSong(currentSong);
+               }
+
+           }
+
+
+
+       }
+
+
+
+
+
+
+   }
+
+
+
     public void seekPlay(int time){// starts playing of the current song at specified  time
         startTime=time;
         audioFileChanged=false;
@@ -809,6 +859,20 @@ newSongPlay=false;
         if(audioFile!=null) {
             this.audioFileExtension = audioFileUtilities.getExtensionOfFile(audioFile);
         }
+        else if(library.getSettings().isAskToFindMissingFilesForSongs()){
+
+            new OptionPane().showLocateFilePane(currentSong);
+
+        }
+        else if(library.getSettings().isRemoveSongsWithMissingFilesOnDiscovery()){
+            library.getAllSongs().remove(currentSong);
+            currentPlaylistPane.getPlaylist().getAllSongs().remove(currentSong);
+            currentPlaylistPane.updatePane();
+
+        }
+
+
+
     }
     public void setCurrentSong(AudioInformation currentSong){
         if(this.currentSong!=null) {
@@ -823,6 +887,7 @@ newSongPlay=false;
             setCurrentArtist(currentSong.getArtist());
             setCurrentTrackTitle(currentSong.getTitle());
             getCurrentImages(currentSong);
+            setAudioFile(currentSong.getPhysicalFile());
         }
     }
     public void getCurrentImages(AudioInformation currentSong){
@@ -872,7 +937,7 @@ newSongPlay=false;
         }
     }
     public PlaylistPane getCurrentPlaylistPane(){
-        return currentPlayListPane;
+        return currentPlaylistPane;
     }
     public void saveLibrary(){ //  saves the music library using the library saving class  that saves it in json called from new thread  as it may
         // take awhile to save depending on the number of playlists and songs.
@@ -885,6 +950,9 @@ newSongPlay=false;
         Thread thread= new Thread(runnable);
         thread.start();
     }
+
+
+
     public Settings getSettings() {
         return settings;
     }
@@ -934,7 +1002,7 @@ newSongPlay=false;
         this.pan = pan;
     }
     public void setCurrentPlaylistPane(PlaylistPane pane){
-        this.currentPlayListPane=pane;
+        this.currentPlaylistPane =pane;
         if(menuBar!=null) {
             menuBar.updateMenusToPlaylistPane(pane);
         }
@@ -1044,5 +1112,13 @@ newSongPlay=false;
 
     public MainScene getMainScene() {
         return mainScene;
+    }
+
+    public boolean isFindFile() {
+        return findFile;
+    }
+
+    public void setFindFile(boolean findFile) {
+        this.findFile = findFile;
     }
 }

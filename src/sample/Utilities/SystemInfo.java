@@ -1,10 +1,10 @@
 package sample.Utilities;
 
 public class SystemInfo {
-   final private   String systemOs;
-    final private  String systemOsVersion;
-    final private String fileSeperator;
-    final String userHomePath;
+    static  private   String systemOs;
+     static private  String systemOsVersion;
+    static private String fileSeperator;
+    static String userHomePath;
 
 
     public SystemInfo() {
@@ -16,19 +16,19 @@ public class SystemInfo {
 
     }
 
-    public String getSystemOs() {
+    public static String getSystemOs() {
         return systemOs;
     }
 
-    public String getSystemOsVersion() {
+    public  static String getSystemOsVersion() {
         return systemOsVersion;
     }
 
-    public String getFileSeperator() {
+    public static String getFileSeperator() {
         return fileSeperator;
     }
 
-    public String getUserHomePath() {
+    public  static String getUserHomePath() {
         return userHomePath;
     }
 }

@@ -51,6 +51,8 @@ public class AudioFileSorter implements  FileAction, AudioInformationAction {
     private String fileMovedPath;
     private String fileSeperator;
     private boolean onCD;
+    private boolean exactCopy;
+
 
 
 
@@ -59,7 +61,9 @@ public class AudioFileSorter implements  FileAction, AudioInformationAction {
         this.getMissingTags=getMissingTags;
         this.sortFolderPath=sortFolderPath;
         this.renameAndMoveDuplicateFiles=renameAndMoveDuplicateFiles;
-        filePaths.addAll(utilities.findDirectories(sortFolderPath));
+        if(sortFolderPath!=null) {
+            filePaths.addAll(utilities.findDirectories(sortFolderPath));
+        }
         this.sortFilesByType = sortFilesByType;
         this.sortByBitRate = sortByBitRate;
         this.copyThenMove=copyThenMove;
@@ -166,7 +170,6 @@ public class AudioFileSorter implements  FileAction, AudioInformationAction {
                 e.printStackTrace();
                 currentErrors++;
             }
-            System.out.println(" folder created!");
         }
         else { // just move file to folder as folder allready exists.
             File directory = new File(fileToMoveDestitnationPath);
@@ -178,7 +181,7 @@ public class AudioFileSorter implements  FileAction, AudioInformationAction {
                         FileUtils.moveToDirectory(fileToMove, directory, false);
                     }
                 } catch (FileExistsException e) {
-                    boolean isDuplicate = utilities.isAudioCopy(fileToMove, new File(fileToMoveDestitnationPath));
+                    boolean isDuplicate = utilities.isAudioCopy( exactCopy, fileToMove, new File(fileToMoveDestitnationPath));
                     if (renameAndMoveDuplicateFiles == true || isDuplicate == false) { // if rename files is true rename file move it
                         fileToMove = utilities.renameDuplicateFile(fileToMove, directory);
                         try {
@@ -241,7 +244,6 @@ public class AudioFileSorter implements  FileAction, AudioInformationAction {
                     artistCounter++;
                 }
                 String fileToMoveDestitnationPath = "";
-                System.out.println("Path "+cueSheet.getAudioFilePath());
                 AudioFile audioFile = null;
                     audioFile = cueSheet.getAudioFile();
 
@@ -295,7 +297,7 @@ public class AudioFileSorter implements  FileAction, AudioInformationAction {
                                 cueSheet.setAudioFilePath(directory.getAbsolutePath()+""+fileSeperator+""+ audioFile.getFile().getName());
                             }
                         } catch (FileExistsException e) {
-                            boolean isDuplicate = utilities.isAudioCopy(cueFile, new File(fileToMoveDestitnationPath));
+                            boolean isDuplicate = utilities.isAudioCopy(true, cueFile, new File(fileToMoveDestitnationPath));
                             if (renameAndMoveDuplicateFiles == true || isDuplicate == false) { // if rename files is true rename file move it
                                 cueFile = utilities.renameDuplicateFile(cueFile, directory);
                                 try {
@@ -471,5 +473,13 @@ public class AudioFileSorter implements  FileAction, AudioInformationAction {
 
     public void setOnCD(boolean onCD) {
         this.onCD = onCD;
+    }
+
+    public boolean isExactCopy() {
+        return exactCopy;
+    }
+
+    public void setExactCopy(boolean exactCopy) {
+        this.exactCopy = exactCopy;
     }
 }
